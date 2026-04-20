@@ -20,7 +20,7 @@ import { useMemo, useState } from "react";
 
 const SubjectsList = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
 
   const departmentFilter =
     selectedDepartment === "all"
