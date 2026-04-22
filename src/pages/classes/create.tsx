@@ -75,18 +75,18 @@ const Create = () => {
         },
     ];
 
-    const bannerPublicId = form.watch('bannerCldPublicId')
+    const bannerPublicId = form.watch('bannerCldPubId')
 
     const setBannerImage = (file: { url: string; publicId: string } | null, field: { onChange: (value: string) => void }) => {
         if(file){
             field.onChange(file.url)
-            form.setValue('bannerCldPublicId', file.publicId, {
+            form.setValue('bannerCldPubId', file.publicId, {
                 shouldValidate: true,
                 shouldDirty: true,
             })
         } else {
             field.onChange('')
-            form.setValue('bannerCldPublicId', '', {
+            form.setValue('bannerCldPubId', '', {
                 shouldValidate: true,
                 shouldDirty: true,
             })
@@ -133,9 +133,9 @@ const Create = () => {
                                                />
                                             </FormControl>
                                             <FormMessage />
-                                            {errors.bannerCldPublicId && !errors.bannerUrl && (
+                                            {errors.bannerCldPubId && !errors.bannerUrl && (
                                                 <p className="text-destructive text-sm">
-                                                    {errors.bannerCldPublicId.message?.toString()}
+                                                    {errors.bannerCldPubId.message?.toString()}
                                                 </p>
                                             )}
                                         </FormItem>

@@ -78,9 +78,12 @@ const UploadWidget = ({
         <div
           className="upload-dropzone"
           role="button"
-          tabIndex={0}
+          //   tabIndex={0}
+          tabIndex={disabled ? -1 : 0}
+          aria-disabled={disabled}
           onClick={openWidget}
           onKeyDown={(event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
             event.preventDefault();
             openWidget();
           }}
