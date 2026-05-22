@@ -41,6 +41,15 @@ const options: CreateDataProviderOptions = {
           if (field === "department") params.department = value;
           if (field === "name" || field === "code") params.search = value;
         }
+        if (resource === "classes") {
+          // Map filters used by the classes list page to backend query params
+          // - name -> search
+          // - subject -> subject (subject name)
+          // - teacher -> teacher (teacher name)
+          if (field === "name") params.search = value;
+          if (field === "subject") params.subject = value;
+          if (field === "teacher") params.teacher = value;
+        }
       });
 
       return params;
