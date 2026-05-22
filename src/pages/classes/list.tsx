@@ -17,6 +17,7 @@ import { ColumnDef } from "@tanstack/table-core";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { ClassDetails, Subject, User } from "@/types";
+import { ShowButton } from "@/components/refine-ui/buttons/show";
 
 const ClassesList = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,9 +31,7 @@ const ClassesList = () => {
   const subjectFilter =
     selectedSubject === "all"
       ? []
-      : [
-          { field: "subject", operator: "eq" as const, value: selectedSubject },
-        ];
+      : [{ field: "subject", operator: "eq" as const, value: selectedSubject }];
 
   const teacherFilter =
     selectedTeacher === "all"
@@ -85,7 +84,11 @@ const ClassesList = () => {
           size: 120,
           header: () => <p className="column-title">Status</p>,
           cell: ({ getValue }) => (
-            <Badge variant={getValue<string>() === "active" ? "default" : "secondary"}>
+            <Badge
+              variant={
+                getValue<string>() === "active" ? "default" : "secondary"
+              }
+            >
               {getValue<string>()}
             </Badge>
           ),
@@ -115,13 +118,30 @@ const ClassesList = () => {
           header: () => <p className="column-title">Capacity</p>,
           cell: ({ getValue }) => <span>{getValue<number>()}</span>,
         },
+        {
+          id: "details",
+          size: 140,
+          header: () => <p className="column-title">Details</p>,
+          cell: ({ row }) => (
+            <ShowButton
+              resource="classes"
+              recordItemId={row.original.id}
+              variant="outline"
+              size="sm"
+            >
+              View
+            </ShowButton>
+          ),
+        },
       ],
-      []
+      [],
     ),
     refineCoreProps: {
       resource: "classes",
       pagination: { pageSize: 10, mode: "server" },
-      filters: { permanent: [...searchFilters, ...subjectFilter, ...teacherFilter] },
+      filters: {
+        permanent: [...searchFilters, ...subjectFilter, ...teacherFilter],
+      },
       sorters: { initial: [{ field: "id", order: "desc" }] },
     },
   });
