@@ -246,8 +246,9 @@ function SidebarHeader() {
         <div>{title.icon}</div>
         <h2
           className={cn(
-            "text-sm",
+            "text-xl",
             "font-bold",
+            "tracking-widest",
             "transition-opacity",
             "duration-200",
             {

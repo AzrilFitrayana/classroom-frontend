@@ -57,6 +57,10 @@ function App() {
                 syncWithLocation: true,
                 warnWhenUnsavedChanges: true,
                 projectId: "kkWuv7-GgBIfw-P8CGy0",
+                title: {
+                  text: "UNIFY",
+                  icon: <img src="/Logo.png" alt="Unify logo" className="w-10 h-10 object-contain" />, // bisa ganti ikon lain yang sudah Anda import, misal <Home /> atau logo custom
+                },
               }}
               resources={[
                 {
