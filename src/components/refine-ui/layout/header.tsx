@@ -14,6 +14,7 @@ import {
   useRefineOptions,
 } from "@refinedev/core";
 import { LogOutIcon } from "lucide-react";
+import { UserInfo } from "./user-info";
 
 export const Header = () => {
   const { isMobile } = useSidebar();
@@ -40,8 +41,8 @@ function DesktopHeader() {
         "z-40"
       )}
     >
-      <ThemeToggle />
       <UserDropdown />
+      <ThemeToggle />
     </header>
   );
 }
@@ -128,6 +129,7 @@ const UserDropdown = () => {
 
   return (
     <DropdownMenu>
+      <UserInfo />
       <DropdownMenuTrigger>
         <UserAvatar />
       </DropdownMenuTrigger>
