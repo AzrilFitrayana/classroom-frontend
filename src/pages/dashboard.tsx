@@ -6,11 +6,14 @@ import {
   Cell,
   Pie,
   PieChart,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   BookOpen,
   Building2,
@@ -37,8 +40,6 @@ type ClassListItem = {
   };
 };
 
-const roleColors = ["#f97316", "#0ea5e9", "#22c55e", "#a855f7"];
-
 const Dashboard = () => {
   const Link = useLink();
   const { query: usersQuery } = useList<User>({
@@ -61,10 +62,22 @@ const Dashboard = () => {
     pagination: { mode: "off" },
   });
 
-  const users = usersQuery.data?.data ?? [];
-  const subjects = subjectsQuery.data?.data ?? [];
-  const departments = departmentsQuery.data?.data ?? [];
-  const classes = classesQuery.data?.data ?? [];
+  const users = useMemo(
+    () => usersQuery.data?.data ?? [],
+    [usersQuery.data?.data]
+  );
+  const subjects = useMemo(
+    () => subjectsQuery.data?.data ?? [],
+    [subjectsQuery.data?.data]
+  );
+  const departments = useMemo(
+    () => departmentsQuery.data?.data ?? [],
+    [departmentsQuery.data?.data]
+  );
+  const classes = useMemo(
+    () => classesQuery.data?.data ?? [],
+    [classesQuery.data?.data]
+  );
 
   const usersByRole = useMemo(() => {
     const counts = users.reduce<Record<string, number>>((acc, user) => {
@@ -224,7 +237,16 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
+              <ChartContainer
+                className="h-full aspect-auto"
+                config={{
+                  primary: { color: "var(--color-chart-1)" },
+                  secondary: { color: "var(--color-chart-2)" },
+                  tertiary: { color: "var(--color-chart-3)" },
+                  quaternary: { color: "var(--color-chart-4)" },
+                  quinary: { color: "var(--color-chart-5)" },
+                }}
+              >
                 <PieChart>
                   <Pie
                     dataKey="total"
@@ -237,13 +259,13 @@ const Dashboard = () => {
                     {usersByRole.map((entry, index) => (
                       <Cell
                         key={`${entry.role}-${index}`}
-                        fill={roleColors[index % roleColors.length]}
+                        fill={`var(--color-chart-${(index % 5) + 1})`}
                       />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip content={<ChartTooltipContent />} />
                 </PieChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </div>
             <div className="flex flex-wrap gap-2">
               {usersByRole.map((entry, index) => (
@@ -254,8 +276,7 @@ const Dashboard = () => {
                   <span
                     className="h-2 w-2 rounded-full"
                     style={{
-                      backgroundColor:
-                        roleColors[index % roleColors.length],
+                      backgroundColor: `var(--color-chart-${(index % 5) + 1})`,
                     }}
                   />
                   {entry.role} · {entry.total}
@@ -305,18 +326,23 @@ const Dashboard = () => {
               Subjects per Department
             </h3>
             <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
+              <ChartContainer
+                className="h-full aspect-auto"
+                config={{
+                  totalSubjects: { color: "var(--color-chart-2)" },
+                }}
+              >
                 <BarChart data={subjectsByDepartment}>
                   <XAxis dataKey="departmentName" tick={{ fontSize: 12 }} />
                   <YAxis allowDecimals={false} />
-                  <Tooltip />
+                  <Tooltip content={<ChartTooltipContent />} />
                   <Bar
                     dataKey="totalSubjects"
-                    fill="#f97316"
+                    fill="var(--color-chart-2)"
                     radius={[6, 6, 0, 0]}
                   />
                 </BarChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </div>
           </div>
 
@@ -325,18 +351,23 @@ const Dashboard = () => {
               Classes per Subject
             </h3>
             <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
+              <ChartContainer
+                className="h-full aspect-auto"
+                config={{
+                  totalClasses: { color: "var(--color-chart-3)" },
+                }}
+              >
                 <BarChart data={classesBySubject}>
                   <XAxis dataKey="subjectName" tick={{ fontSize: 12 }} />
                   <YAxis allowDecimals={false} />
-                  <Tooltip />
+                  <Tooltip content={<ChartTooltipContent />} />
                   <Bar
                     dataKey="totalClasses"
-                    fill="#0ea5e9"
+                    fill="var(--color-chart-3)"
                     radius={[6, 6, 0, 0]}
                   />
                 </BarChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </div>
           </div>
         </CardContent>
